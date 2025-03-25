@@ -1,0 +1,34 @@
+# Diretórios de estado do Terraform
+.terraform/
+.terraform.lock.hcl
+
+# Arquivos de estado
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.*
+
+# Planos gerados
+terraform.tfplan
+*.tfplan
+
+# Logs
+crash.log
+*.log
+
+# Overrides locais
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Variáveis sensíveis
+terraform.tfvars
+*.tfvars
+
+# Arquivos de saída do Terraform
+*.out
+
+# Arquivos de cache
+.terraformrc
+terraform.rc
