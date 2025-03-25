@@ -1,5 +1,5 @@
 __copyright__ = """
-Copyright 2025 Darede.
+Copyright 2025 Diego Broetto.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
