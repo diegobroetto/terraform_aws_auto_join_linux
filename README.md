@@ -1,64 +1,64 @@
 # EC2 Linux Domain Join Automation
 
-Automação completa para ingresso de instâncias EC2 Linux no Active Directory de forma automática, segura e escalável usando serviços nativos da AWS.
+Fully automated solution to join Linux EC2 instances to an Active Directory domain using native AWS services — no manual steps required.
 
-## 📌 Visão Geral
+## 📌 Overview
 
-Esta solução detecta automaticamente quando uma nova instância EC2 Linux entra no estado `running` e executa um script via AWS Systems Manager para realizar o ingresso no domínio AD com as configurações corretas.
+This solution automatically detects when a new Linux EC2 instance enters the `running` state and triggers a Systems Manager Run Command to join it to the domain with the correct configuration.
 
-Tudo isso com:
+Powered by:
 
 - ✅ AWS Lambda
 - ✅ Amazon EventBridge
 - ✅ AWS Systems Manager (SSM)
 - ✅ Parameter Store
-- ✅ Shell Script customizado
-- ✅ Terraform para deploy completo
+- ✅ Custom Bash Script
+- ✅ Terraform for full deployment
 
-## 🧠 Como Funciona
+## 🧠 How It Works
 
-1. Uma instância EC2 Linux é iniciada.
-2. O EventBridge detecta o evento de mudança de estado para `running`.
-3. Uma Lambda é acionada e verifica se a instância é nova e registrada no SSM.
-4. A Lambda executa um SSM Document com um script que:
-   - Faz o join da instância ao domínio AD
-   - Configura DNS dinâmico via SSSD
-   - Ajusta o SSH para autenticação via AD
-   - Adiciona grupo do domínio como sudoer
+1. A Linux EC2 instance is launched.
+2. EventBridge captures the state-change event (`running`).
+3. Lambda function is triggered and checks if the instance is new and registered in SSM.
+4. Lambda executes a custom SSM Document that:
+   - Joins the instance to the AD domain
+   - Configures dynamic DNS updates (SSSD)
+   - Enables SSH password authentication with AD users
+   - Grants sudo access to a specified AD group
 
-## 🖼️ Arquitetura
+## 🖼️ Architecture
 
-![Arquitetura da Solução](join.drawio.png)
+![Architecture](join.drawio.png)
 
-## ⚙️ Requisitos
+## ⚙️ Requirements
 
-### Instância EC2
-- Linux com `yum` (Amazon Linux 2, RHEL, CentOS)
-- IAM Role com `AmazonSSMManagedInstanceCore`
-- Acesso de rede aos Controladores de Domínio
-- DNS apontando para o servidor do AD
-- Portas abertas: 88, 389, 445, 123, 464
+### EC2 Instance
+- Linux with `yum` (Amazon Linux 2, RHEL, CentOS)
+- IAM Role with `AmazonSSMManagedInstanceCore`
+- Network access to Active Directory Domain Controllers
+- DNS pointing to the AD server
+- Required open ports: 88, 389, 445, 123, 464
 
 ### SSM Parameter Store
-Certifique-se de criar os seguintes parâmetros:
+Make sure the following parameters exist:
 
-| Nome           | Tipo         | Descrição                                 |
-|----------------|--------------|-------------------------------------------|
-| `DOMAIN`       | String       | Nome FQDN do domínio AD                   |
-| `DOMAIN_USER`  | String       | Usuário com permissão de join no domínio  |
-| `DOMAIN_PASS`  | SecureString | Senha do usuário AD                       |
-| `DOMAIN_GROUP` | String       | Nome do grupo AD com acesso sudo          |
+| Name           | Type         | Description                                      |
+|----------------|--------------|--------------------------------------------------|
+| `DOMAIN`       | String       | FQDN of the AD domain                            |
+| `DOMAIN_USER`  | String       | AD user with permission to join machines         |
+| `DOMAIN_PASS`  | SecureString | Password for the user above                      |
+| `DOMAIN_GROUP` | String       | AD group name to grant sudo access               |
 
-### DHCP Option Set (opcional, mas recomendado)
-Configure a VPC para usar um **DHCP Option Set** com o DNS do domínio AD.
+### DHCP Option Set (recommended)
+Configure a DHCP Option Set for your VPC to point to the AD DNS server.
 
 ---
 
-## ☁️ Deploy com Terraform
+## ☁️ Deploy with Terraform
 
-1. Clone o repositório
-2. Configure os parâmetros no SSM Parameter Store
-3. Acesse a pasta `terraform` e execute:
+1. Clone this repository  
+2. Make sure SSM parameters are created  
+3. Navigate to the `terraform/` folder and run:
 
 ```bash
 terraform init
@@ -67,15 +67,14 @@ terraform apply
 
 ---
 
-## 📄 Artigo técnico
+## 📄 Technical Article
 
-Todos os detalhes dessa automação estão descritos no artigo completo:  
-📎 *[Insira aqui o link para o Medium]*
+Full technical breakdown is available in the Medium article:  
+📎 *[]*
 
 ---
 
-## 🙋 Sobre o Autor
+## 🙋 About the Author
 
 **Diego Broetto**  
 🔗 [linkedin.com/in/diegobroetto](https://www.linkedin.com/in/diegobroetto)  
-📧 diego.broetto@darede.com.br
