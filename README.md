@@ -62,6 +62,7 @@ Configure a DHCP Option Set for your VPC to point to the AD DNS server.
 3. Fill in the required variables in `terraform.tfvars`:
 
 ```hcl
+region = "us-east-1"
 subnet_lambda           = ["subnet-xxxxxx"]
 security_group_lambda   = ["sg-xxxxxx"]
 ```
