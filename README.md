@@ -1,3 +1,4 @@
+
 # EC2 Linux Domain Join Automation
 
 Fully automated solution to join Linux EC2 instances to an Active Directory domain using native AWS services — no manual steps required.
@@ -33,14 +34,14 @@ Powered by:
 ## ⚙️ Requirements
 
 ### EC2 Instance
-- Linux with `yum` (Amazon Linux 2, RHEL, CentOS)
-- IAM Role with `AmazonSSMManagedInstanceCore`
+- Linux with `dnf` (Amazon Linux 3)
+- IAM role with appropriate permissions 
 - Network access to Active Directory Domain Controllers
 - DNS pointing to the AD server
 - Required open ports: 88, 389, 445, 123, 464
 
 ### SSM Parameter Store
-Make sure the following parameters exist:
+After applying Terraform, make sure to fill in the following parameters in AWS Systems Manager Parameter Store:
 
 | Name           | Type         | Description                                      |
 |----------------|--------------|--------------------------------------------------|
@@ -58,7 +59,14 @@ Configure a DHCP Option Set for your VPC to point to the AD DNS server.
 
 1. Clone this repository  
 2. Make sure SSM parameters are created  
-3. Navigate to the `terraform/` folder and run:
+3. Fill in the required variables in `terraform.tfvars`:
+
+```hcl
+subnet_lambda           = ["subnet-xxxxxx"]
+security_group_lambda   = ["sg-xxxxxx"]
+```
+
+4. Navigate to the `terraform/` folder and run:
 
 ```bash
 terraform init
@@ -77,4 +85,4 @@ Full technical breakdown is available in the Medium article:
 ## 🙋 About the Author
 
 **Diego Broetto**  
-🔗 [linkedin.com/in/diegobroetto](https://www.linkedin.com/in/diegobroetto)  
+🔗 [linkedin.com/in/diegobroetto](https://www.linkedin.com/in/diegobroetto)

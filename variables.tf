@@ -1,9 +1,14 @@
 variable "subnet_lambda" {
-  description = "subnet onde esta alocado o AD"
+  description = "Subnet to allocate AWS Lambda"
   type        = list(string)
 }
 
 variable "security_group_lambda" {
-  description = "sg com liberacoes necessarias"
+  description = "Security Group For Lambda"
   type        = list(string)
+}
+
+variable "region" {
+  description = "Region to deploy"
+  type        = string
 }
