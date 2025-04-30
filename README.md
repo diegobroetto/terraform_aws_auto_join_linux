@@ -79,7 +79,7 @@ terraform apply
 ## 📄 Technical Article
 
 Full technical breakdown is available in the Medium article:  
-📎 *[]*
+📎 *[https://medium.com/@diego.broetto1/automating-linux-instance-domain-join-to-ad-with-lambda-and-ssm-on-aws-cloud-609c846181dd]*
 
 ---
 
