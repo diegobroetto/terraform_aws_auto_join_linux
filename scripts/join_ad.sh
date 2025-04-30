@@ -59,7 +59,7 @@ ad_domain = $DOMAIN
 use_fully_qualified_names = False
 ldap_id_mapping = True
 access_provider = simple
-simple_allow_groups = $DOMAIN_GROUP
+simple_allow_groups = $DOMAIN_GROUP@$DOMAIN
 
 [pam]
 pam_mkhomedir = true
