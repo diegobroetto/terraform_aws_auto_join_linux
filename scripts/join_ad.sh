@@ -27,19 +27,13 @@ dnf install -y realmd sssd oddjob oddjob-mkhomedir adcli samba-common samba-comm
 # === 3. JOIN DOMAIN ===
 echo "[3/9] Joining domain $DOMAIN as $DOMAIN_USER..."
 echo "$DOMAIN_PASS" | realm join --user="$DOMAIN_USER" "$DOMAIN"
-realm discover
 
 # === 4. BACKUP CONFIGURATION FILES ===
 echo "[4/9] Backing up current configuration files..."
 cp "$SSSD_CONFIG" "${SSSD_CONFIG}.bak_$(date +%F_%H%M%S)" 2>/dev/null || true
 cp "$SSHD_CONFIG" "${SSHD_CONFIG}.bak_$(date +%F_%H%M%S)" 2>/dev/null || true
 
-# === 5. RESTART sssd AND sshd ===
-echo "[5/9] Restarting services to apply domain state..."
-systemctl restart sssd
-systemctl restart sshd
-
-# === 6. GENERATE NEW sssd.conf ===
+# === 5. GENERATE NEW sssd.conf ===
 echo "[6/9] Creating new sssd.conf..."
 cat > "$SSSD_CONFIG" <<EOF
 [sssd]
@@ -67,6 +61,11 @@ EOF
 
 chmod 600 "$SSSD_CONFIG"
 
+# === 6. RESTART SSSD TO APPLY NEW CONFIGURATION ===
+echo "[6/9] Restarting SSSD to apply new configuration..."
+systemctl restart sssd
+systemctl enable sssd
+
 # === 7. CONFIGURE SSH ===
 echo "[7/9] Updating SSH configuration..."
 sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' "$SSHD_CONFIG"
@@ -80,10 +79,10 @@ fi
 grep -q "^ChallengeResponseAuthentication" "$SSHD_CONFIG" || echo "ChallengeResponseAuthentication yes" >> "$SSHD_CONFIG"
 grep -q "^UsePAM" "$SSHD_CONFIG" || echo "UsePAM yes" >> "$SSHD_CONFIG"
 
-# === 8. START SERVICES ===
-echo "[8/9] Starting services..."
-systemctl start sssd
-systemctl start sshd
+# === 8. RESTART SSH TO APPLY CONFIGURATION ===
+echo "[9/9] Restarting SSH to apply configuration..."
+systemctl restart sshd
+systemctl enable sshd
 
 # === 9. CONFIGURE SUDOERS FOR AD GROUP ===
 echo "[9/9] Granting sudo permissions to AD group '$DOMAIN_GROUP'..."
