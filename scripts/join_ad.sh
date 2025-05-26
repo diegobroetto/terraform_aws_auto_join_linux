@@ -4,7 +4,7 @@
 # Author      : Diego Broetto
 # Date        : 2025-03-25
 # Description : Script to automate domain join for Linux AWS EC2 instances
-# Version     : 1.0
+# Version     : 1.1
 # License     : Apache 2.0
 # -----------------------------------------------------------------------------
 
