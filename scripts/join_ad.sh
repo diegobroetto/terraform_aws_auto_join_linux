@@ -4,7 +4,7 @@
 # Author      : Diego Broetto
 # Date        : 2025-03-25
 # Description : Script to automate domain join for Linux AWS EC2 instances
-# Version     : 1.1
+# Version     : 1.2
 # License     : Apache 2.0
 # -----------------------------------------------------------------------------
 
@@ -18,7 +18,20 @@ DOMAIN_PASS=$(aws ssm get-parameter --name DOMAIN_PASS --with-decryption --query
 DOMAIN_GROUP=$(aws ssm get-parameter --name DOMAIN_GROUP --query "Parameter.Value" --output text)
 SSHD_CONFIG="/etc/ssh/sshd_config"
 SSSD_CONFIG="/etc/sssd/sssd.conf"
+TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
+INSTANCE_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
 REALM_UPPER=$(echo "$DOMAIN" | tr '[:lower:]' '[:upper:]')
+
+# === 2. CHANGE INSTANCE HOSTNAME ===
+NEW_HOSTNAME=$(aws ec2 describe-tags --filters "Name=resource-id,Values=$INSTANCE_ID" "Name=key,Values=Name" --query "Tags[0].Value" --output text)
+
+if [ ! -z "$NEW_HOSTNAME" ]; then
+    # Set the hostname
+    hostnamectl set-hostname "$NEW_HOSTNAME"
+    echo "Hostname changed to: $NEW_HOSTNAME"
+else
+    echo "No Name tag found for this instance"
+fi
 
 # === 2. INSTALL REQUIRED PACKAGES ===
 echo "[2/9] Installing required packages..."
