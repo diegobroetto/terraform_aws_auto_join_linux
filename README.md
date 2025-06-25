@@ -1,22 +1,21 @@
-
 # EC2 Linux Domain Join Automation
 
 Fully automated solution to join Linux EC2 instances to an Active Directory domain using native AWS services — no manual steps required.
 
-## 📌 Overview
+## Overview
 
 This solution automatically detects when a new Linux EC2 instance enters the `running` state and triggers a Systems Manager Run Command to join it to the domain with the correct configuration.
 
 Powered by:
 
-- ✅ AWS Lambda
-- ✅ Amazon EventBridge
-- ✅ AWS Systems Manager (SSM)
-- ✅ Parameter Store
-- ✅ Custom Bash Script
-- ✅ Terraform for full deployment
+- AWS Lambda
+- Amazon EventBridge
+- AWS Systems Manager (SSM)
+- Parameter Store
+- Custom Bash Script
+- Terraform for full deployment
 
-## 🧠 How It Works
+## How It Works
 
 1. A Linux EC2 instance is launched.
 2. EventBridge captures the state-change event (`running`).
@@ -27,11 +26,11 @@ Powered by:
    - Enables SSH password authentication with AD users
    - Grants sudo access to a specified AD group
 
-## 🖼️ Architecture
+## Architecture
 
 ![Architecture](join.drawio.png)
 
-## ⚙️ Requirements
+## Requirements
 
 ### EC2 Instance
 - Linux with `dnf` (Amazon Linux 3)
@@ -55,7 +54,7 @@ Configure a DHCP Option Set for your VPC to point to the AD DNS server.
 
 ---
 
-## ☁️ Deploy with Terraform
+## Deploy with Terraform
 
 1. Clone this repository  
 2. Make sure SSM parameters are created  
@@ -76,14 +75,14 @@ terraform apply
 
 ---
 
-## 📄 Technical Article
+## Technical Article
 
 Full technical breakdown is available in the Medium article:  
-📎 *[https://medium.com/@diego.broetto1/automating-linux-instance-domain-join-to-ad-with-lambda-and-ssm-on-aws-cloud-609c846181dd]*
+[https://medium.com/@diego.broetto1/automating-linux-instance-domain-join-to-ad-with-lambda-and-ssm-on-aws-cloud-609c846181dd]
 
 ---
 
-## 🙋 About the Author
+## About the Author
 
 **Diego Broetto**  
-🔗 [linkedin.com/in/diegobroetto](https://www.linkedin.com/in/diegobroetto)
+[linkedin.com/in/diegobroetto](https://www.linkedin.com/in/diegobroetto)
